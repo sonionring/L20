@@ -1,9 +1,11 @@
+const path = require('path');
 const express = require('express');
 const mysql = require('mysql2');
 const session = require('express-session');
 const flash = require('connect-flash');
 const multer = require('multer');
 const app = express();
+const PORT = process.env.PORT || 3000;
 
 // Set up multer for file uploads
 const storage = multer.diskStorage({
@@ -38,8 +40,9 @@ connection.connect((err) => {
 
 // Set up view engine
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 //  enable static files
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 // enable form processing
 app.use(express.urlencoded({
     extended: false
@@ -317,5 +320,4 @@ app.get('/deleteProduct/:id', (req, res) => {
     });
 });
 
-const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

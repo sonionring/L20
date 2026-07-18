@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const mysql = require('mysql2');
 
@@ -7,6 +8,9 @@ const session = require('express-session');
 const flash = require('connect-flash');
 
 const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.set('views', path.join(__dirname, 'views'));
 
 // Database connection
 const db = mysql.createConnection({
@@ -28,7 +32,7 @@ db.connect((err) => {
 });
 
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 //******** TODO: Insert code for Session Middleware below ********//
 app.use(session({
@@ -163,6 +167,6 @@ app.get('/logout', (req, res) => {
 });
 
 // Starting the server
-app.listen(3000, () => {
-    console.log('Server started on port 3000');
+app.listen(PORT, () => {
+    console.log(`Server started on port ${PORT}`);
 });
